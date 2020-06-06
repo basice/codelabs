@@ -1,0 +1,48 @@
+<form (ngSubmit)="onSubmit(form.value)" [formGroup]="form" novalidate>
+
+  <div *ngFor="let prop of objectProps">
+    <label [attr.for]="prop">{{ prop.label}}</label>
+
+    <div [ngSwitch]="prop.type">
+
+      <input *ngSwitchCase="'text'"
+             [formControlName]="prop.key"
+             [id]="prop.key" [type]="prop.type"
+             class="form-control">
+
+      <div *ngSwitchCase="'select'">
+        <select [formControlName]="prop.key">
+          <option *ngFor="let option of prop.options" [value]="option.value">
+            {{ option.label }}
+          </option>
+        </select>
+      </div>
+
+      <div *ngSwitchCase="'radio'">
+        <label *ngFor="let option of prop.options">
+          <input
+            [formControlName]="prop.key"
+            [name]="prop.key"
+            [value]="option.value"
+            type="radio"> {{option.label}}
+        </label>
+      </div>
+    </div>
+
+  </div> <!-- end ngSwitch -->
+
+  <div class="mt-2">
+    <button class="btn btn-primary"
+            type="submit">
+      Save
+    </button>
+  </div>
+</form>
+
+<hr/>
+<strong>Form value</strong>
+<pre>{{ form.value | json  }}</pre>
+<pre>
+<!--  valid: {{ form.valid }}-->
+  <!--  submited: {{ formSubmitted }}-->
+</pre>
